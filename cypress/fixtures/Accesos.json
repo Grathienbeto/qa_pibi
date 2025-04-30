@@ -1,0 +1,17 @@
+{
+  "Admin_User": "admin@pibi.com.ar",
+  "Admin_Password": "Admin1234",
+  "Admin_User_Incorrecto": "admin@pibi.com",
+  "Admin_Password_Incorrecto": "Admin12345",
+  "User_Example": "t@t.com.ar",
+  "User_Password": "Admin1234",
+  "User_Fake": "test10@gmail.com",
+  "Password_Fake": "testing123",
+  "Contraseña": "testingQA12#",
+  "ConfirContraseña": "testingQA12#",
+  "Email_Existente": "paul.isla@gestion-it.pe",
+  "ConfirContraseñaFAKE": "testingQA123#",
+  "User_Example_Asignaciones": "qa@gmail.com",
+  "Password_Example_Asignaciones": "test1234",
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluQHBpYmkuY29tLmFyIiwidXNlcl90eXBlIjoiT3JpZ2luQWRtaW4iLCJleHAiOjE3NDU2MDgzMzh9.WrXNZq6hKTyBay9P_caqXm80VncBd_6-WetI3UrfBKs"
+}
