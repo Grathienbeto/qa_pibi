@@ -1,6 +1,6 @@
 export class HOME{
 
-    //SELECTORES//
+    // SELECTORES //
     SesionInformes="[data-testid='reports-navitem']"
     SesionUsuarios="[data-testid='users-navitem']"
     SesionFiltrosRoles= "[data-testid='filterandroles-navitem']"
@@ -9,7 +9,7 @@ export class HOME{
     SesionAsignaciones = "[data-testid='assignments-navitem']"
     SesionEstadisticas = ':nth-child(6) > .d-flex'
 
-    //METODOS Y/O FUNCIONES //
+    // METODOS Y/O FUNCIONES //
     Informes(){return cy.get(this.SesionInformes,{timeout:10000})}
     Usuarios(){return cy.get(this.SesionUsuarios,{timeout:10000})}
     FiltrosRoles(){return cy.get(this.SesionFiltrosRoles,{timeout:10000})}

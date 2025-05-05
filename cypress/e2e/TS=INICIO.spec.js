@@ -1,9 +1,9 @@
 /// <reference types="cypress" />
-import Accesos from "../fixtures/Accesos.json";
 import { faker } from "@faker-js/faker";
 import { onLogin } from "../../Pages/LoginPage";
 import { onHomePage } from "../../Pages/HomePage";
 import { onRegistro } from "../../Pages/Registro";
+import Accesos from "../fixtures/Accesos.json";
 
 describe(' TEST SUITE: "INICIO" --> INICIO DE SESION ', () => {
 
@@ -12,27 +12,62 @@ describe(' TEST SUITE: "INICIO" --> INICIO DE SESION ', () => {
   });
 
   it("001. Iniciar sesion con usuario y contraseña validos.", () => {
-    onLogin.loginUser()
+    onLogin.loginUser(Accesos.Admin_User, Accesos.Admin_Password)
     onHomePage.Informes().should("exist");
   });
 
-  it("Iniciar sesion con usuario valido y contraseña incorrecta.", () => {
+  it("002. Iniciar sesion con usuario valido y contraseña incorrecta.", () => {
     onLogin.loginUser(Accesos.Admin_User, Accesos.Admin_Password_Incorrecto)
     onLogin.Alert_DatosIncorrectos().should("exist");
   });
 
-  it("Iniciar sesion con usuario invalido y contraseña correcta.", () => {
-    onLogin.loginUser(Accesos.Admin_User_Incorrecto, Accesos.Admin_Password)
+  it("003. Iniciar con usuario y dejar en blanco la contraseña", () => {
+    onLogin.loginUser(Accesos.Admin_User, " ")
     onLogin.Alert_DatosIncorrectos().should("exist");
   });
 
-  it("Iniciar sesion con campos vacios.", () => {
+  it("004. Iniciar con contraseña y dejar en blanco el usuario", () =>{
+    onLogin.loginUser(" ", Accesos.Admin_Password)
+    onLogin.AlertUsernameRequerido().should("be.visible");
+  })
+
+  it("005. Iniciar con usuario y dejar en blanco la contraseña", () => {
+    onLogin.loginUser(Accesos.Admin_User_Incorrecto, Accesos.Admin_Password_Incorrecto)
+    onLogin.Alert_DatosIncorrectos().should("exist");
+  });
+
+  it("006. Iniciar con un mail con formato incorrecto", () => {
+    onLogin.loginUser(Accesos.Admin_User_Mal_Formato1, Accesos.Admin_Password_Incorrecto)
+    onLogin.User().then(($input) => {
+      expect($input[0].validationMessage).to.equal('Incluye un signo "@" en la dirección de correo electrónico. La dirección "adminpibi.com" no incluye el signo "@".');
+    });
+  });
+
+  it("007. Iniciar sesion con campos vacios.", () => {
     onLogin.BTN_InicioSesion().click({ force: true });
     onLogin.AlertUsernameRequerido().should("be.visible");
     onLogin.AlertPasswordRequerido().should("be.visible");
   });
 
+  it("008. Input mail tiene que ser tipo mail", () => {
+    onLogin.User().should("have.attr", "type", "email");
+  });
+
+  it("009. Input password tiene que ser tipo password", () => {
+    onLogin.Password().should("have.attr", "type", "password");
+  });
+
+  it("010. Boton 'mostrar password' debe mostrar la password en formato texto", () => {
+    onLogin.Password().type(Accesos.Admin_User_Pass_Prueba)
+    onLogin.Password().should("have.attr", "type", "password");
+    cy.get('span.cursor-pointer.input-group-text').click();
+    onLogin.Password().should("have.attr", "type", "text");
+    cy.get('span.cursor-pointer.input-group-text').click();
+    onLogin.Password().should("have.attr", "type", "password");
+  });
+
 });
+
 
 describe(' TEST SUITE: "INICIO" --> REGISTRO ', () => {
 
@@ -84,4 +119,6 @@ describe(' TEST SUITE: "INICIO" --> REGISTRO ', () => {
     onRegistro.AlertPasswordNoMatch().should("be.visible");
   });
 });
+
+
 
