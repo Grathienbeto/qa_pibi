@@ -68,3 +68,5 @@ export class REGISTRO {
     return cy.contains(this.Alert_Text_PasswordNOCoinciden);
   }
 }
+
+export const onRegistro = new REGISTRO()

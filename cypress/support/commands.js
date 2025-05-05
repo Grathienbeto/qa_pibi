@@ -1,5 +1,4 @@
-import { LOGIN } from "../../Pages/LoginPage";
-const login = new LOGIN();
+import { onLogin } from "../../Pages/LoginPage";
 import Accesos from "../fixtures/Accesos.json";
 const ID_PRUEBA = "3390bbb3-da0c-46e5-8211-6a4a5aa3a043";
 
@@ -10,9 +9,9 @@ Cypress.Commands.add("PageInicioSesion", () => {
 });
 
 Cypress.Commands.add("IniciarSesion", () => {
-  login.User().type(Accesos.Admin_User);
-  login.Password().type(Accesos.Admin_Password);
-  login.BTN_InicioSesion().click({ force: true });
+  onLogin.User().type(Accesos.Admin_User);
+  onLogin.Password().type(Accesos.Admin_Password);
+  onLogin.BTN_InicioSesion().click({ force: true });
 });
 
 Cypress.Commands.add("ActualizarEstadoActivo", () => {

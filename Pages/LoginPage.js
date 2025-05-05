@@ -1,6 +1,9 @@
-export class LOGIN {
-  //SELECTORES//
+import Accesos from "../cypress/fixtures/Accesos.json"
 
+
+export class LOGIN {
+  
+  //SELECTORES//
   input_user = "#username";
   input_password = "#password";
   Button_IniciarSesion = "[data-testid='submit-btn']";
@@ -12,7 +15,6 @@ export class LOGIN {
   Password_AlertText = "El password es requerido";
 
   //METODOS Y/O FUNCIONES //
-
   User() {
     return cy.get(this.input_user, { timeout: 10000 });
   }
@@ -40,4 +42,14 @@ export class LOGIN {
   LogoPIBI() {
     return cy.get(this.Logo_Pibi, { timeout: 10000 });
   }
+
+  loginUser(user = Accesos.Admin_User, password = Accesos.Admin_Password){
+    onLogin.User().type(user);
+    onLogin.Password().type(password)
+    onLogin.BTN_InicioSesion().click({ force: true });
+  }
+
+
 }
+
+export const onLogin = new LOGIN()
