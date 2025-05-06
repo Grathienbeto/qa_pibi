@@ -66,6 +66,104 @@ describe(' TEST SUITE: "INICIO" --> INICIO DE SESION ', () => {
     onLogin.Password().should("have.attr", "type", "password");
   });
 
+  it("013. Boton '¿Olvidaste la contraseña?' muestra el popup para cambiar la contraseña", () => {
+    onLogin.BTN_OlvidastePassword().click()
+    onLogin.Modal_PasswordOlvidada().should('exist')
+  })
+
+  it("013. Boton '¿Olvidaste la contraseña?' muestra el popup para cambiar la contraseña", () => {
+    onLogin.BTN_OlvidastePassword().click()
+    onLogin.Modal_PasswordOlvidada().should('exist')
+    // RECORDAR CAMBIAR EL MAIL PAR Q NO SEA VISIBLE
+    onLogin.Modal_EmailInput().type('betoluna89@gmail.com')
+    onLogin.Modal_BTN_Submit()
+
+  })
+
+  it("015. Intentar recuperar la contraseña de un mail que no este asociado a ningun usuario", () => {
+
+    cy.intercept('POST', 'https://pibi-app-backend-test.azurewebsites.net/user/sendPinRecoveryPass').as('postRequest');
+
+    onLogin.BTN_OlvidastePassword().click()
+    onLogin.Modal_PasswordOlvidada().find(onLogin.Modal_Email_Input).type(Accesos.User_Fake)
+    onLogin.Modal_PasswordOlvidada().find(onLogin.Modal_BTN_Submit).click()
+    onLogin.Modal
+    
+    cy.wait('@postRequest').then((interception) => {
+      // Check response body
+      expect(interception.response.body).to.have.property('detail');
+      // Check response status
+      expect(interception.response.statusCode).to.eq(200);
+    });
+  })
+
+  it("016. Intentar recuperar la contraseña de un mail con formato invalido (sin @)", () => {
+    onLogin.BTN_OlvidastePassword().click()
+    onLogin.Modal_PasswordOlvidada().find(onLogin.Modal_Email_Input).type(Accesos.Admin_User_Mal_Formato1)
+    onLogin.Modal_PasswordOlvidada().find(onLogin.Modal_BTN_Submit).click()
+    onLogin.Modal_PasswordOlvidada().find(onLogin.Modal_Email_Input).then(($input) => {
+      expect($input[0].validationMessage).to.equal('Incluye un signo "@" en la dirección de correo electrónico. La dirección "adminpibi.com" no incluye el signo "@".');
+    });
+  })
+
+  it("017. Intentar recuperar la contraseña de un mail con formato invalido (sin . luego de @)", () => {
+    onLogin.BTN_OlvidastePassword().click()
+    onLogin.Modal_PasswordOlvidada().find(onLogin.Modal_Email_Input).type(Accesos.Admin_User_Mal_Formato2)
+    onLogin.Modal_PasswordOlvidada().find(onLogin.Modal_BTN_Submit).click()
+    onLogin.Modal_PasswordOlvidada().find(onLogin.Modal_Email_Input).then(($input) => {
+      expect($input[0].validationMessage).to.equal('Introduce texto detrás del signo "@". La dirección "admin@" está incompleta.');
+    });
+  })
+
+  it("018. Intentar recuperar la contraseña de un mail con formato invalido (sin . luego de @)", () => {
+    onLogin.BTN_OlvidastePassword().click()
+    onLogin.Modal_PasswordOlvidada().find(onLogin.Modal_Email_Input).type(Accesos.Admin_User_Mal_Formato3)
+    onLogin.Modal_PasswordOlvidada().find(onLogin.Modal_BTN_Submit).click()
+    onLogin.Modal_EmailIncorrect().should('exist')
+    onLogin.Modal_EmailIncorrect().should('contain', 'Debe ser un email válido')
+  })
+
+  it("019. Email input debe ser tipo email", () => {
+    onLogin.BTN_OlvidastePassword().click()
+    cy.wait(1000)
+    onLogin.Modal_PasswordOlvidada().find(onLogin.Modal_Email_Input).should("have.attr", "type", "email");
+  })
+
+  it("021. Ingresar un Token no correcto para el cambio de contraseña", () => {
+    onLogin.BTN_OlvidastePassword().click()
+    // RECORDAR CAMBIAR EL MAIL PAR Q NO SEA VISIBLE
+    onLogin.Modal_PasswordOlvidada().find(onLogin.Modal_Email_Input).type('betoluna89@gmail.com')
+    onLogin.Modal_PasswordOlvidada().find(onLogin.Modal_BTN_Submit).click()
+    cy.wait(5000)
+    onLogin.Modal_TokenInput().type('000000')
+    onLogin.Modal_PasswordOlvidada().find(onLogin.Modal_BTN_Submit).click()
+    onLogin.Alert_ErrorOcurred().should('exist')
+  })
+
+  it("022. Ingresar un Token que no contenga solo numeros", () => {
+    onLogin.BTN_OlvidastePassword().click()
+    // RECORDAR CAMBIAR EL MAIL PAR Q NO SEA VISIBLE
+    onLogin.Modal_PasswordOlvidada().find(onLogin.Modal_Email_Input).type('betoluna89@gmail.com')
+    onLogin.Modal_PasswordOlvidada().find(onLogin.Modal_BTN_Submit).click()
+    cy.wait(5000)
+    onLogin.Modal_TokenInput().type('aaa00#')
+    onLogin.Modal_PasswordOlvidada().find(onLogin.Modal_BTN_Submit).click()
+    onLogin.Alert_ErrorOcurred().should('exist')
+  })
+
+  it.only("023. Ingresar un Token que no contenga solo numeros", () => {
+    onLogin.BTN_OlvidastePassword().click()
+    // RECORDAR CAMBIAR EL MAIL PAR Q NO SEA VISIBLE
+    onLogin.Modal_PasswordOlvidada().find(onLogin.Modal_Email_Input).type('betoluna89@gmail.com')
+    onLogin.Modal_PasswordOlvidada().find(onLogin.Modal_BTN_Submit).click()
+    cy.wait(5000)
+    onLogin.Modal_PasswordOlvidada().find(onLogin.Modal_BTN_Submit).click()
+    onLogin.Modal_EmailIncorrect().should('exist')
+    onLogin.Modal_EmailIncorrect().should('contain', 'El campo código es requerido')
+  })
+
+
+
 });
 
 
@@ -226,7 +324,7 @@ describe(' TEST SUITE: "INICIO" --> REGISTRO ', () => {
     onRegistro.Crear().click({ force: true });
   })
 
-  it.only('114. Intentar registrarse con el campo Confirmar Password vacio', ()=> {
+  it('114. Intentar registrarse con el campo Confirmar Password vacio', ()=> {
     onLogin.BTN_Registrarse().click();
     onRegistro.Nombre().type(faker.person.firstName());
     onRegistro.Apellido().type(faker.person.lastName());
@@ -234,6 +332,18 @@ describe(' TEST SUITE: "INICIO" --> REGISTRO ', () => {
     onRegistro.Password().type(Accesos.Contraseña);
     onRegistro.Crear().click({ force: true });
   })
+
+
+  // TO DO
+  it('115. Boton "deshacer" limpia todo el formulario', ()=> {
+    onLogin.BTN_Registrarse().click();
+  })
+
+  it('116. Boton "Volver a inicio" vuelve al Login', ()=> {
+    onLogin.BTN_Registrarse().click();
+  })
+
+
 
 });
 
