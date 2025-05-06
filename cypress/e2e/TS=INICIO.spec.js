@@ -140,19 +140,35 @@ describe(' TEST SUITE: "INICIO" --> REGISTRO ', () => {
     });
   });
 
-  it.skip("106. Registrarse con un password sin numeros.", () => {
+  it("106. Registrarse con un password sin numeros.", () => {
     onLogin.BTN_Registrarse().click();
     onRegistro.Nombre().type(faker.person.firstName());
     onRegistro.Apellido().type(faker.person.lastName());
     onRegistro.Email().type(faker.internet.email());
     onRegistro.Password().type(Accesos.ContraseñaSinNumeros);
     onRegistro.ConfirmPassword().type(Accesos.ContraseñaSinNumeros);
-    // Modificar cuando hagan un nuevo deploy
-    // onRegistro.Crear().click({ force: true });
-    // onRegistro.AlertPassword().should('contain', '')
+
+    // Sacar comenterio cuando hagan un nuevo deploy\
+    // En QA funciona, en DEMO no.
+    onRegistro.Crear().click({ force: true });
+    onRegistro.AlertPassword().should('contain', 'La contraseña debe contener al menos un número')
   });
 
-  it.only("107. Registrarse con un password que contenga menos de 8 caracteres", () => {
+  it("107. Registrarse con un password sin caracteres especiales.", () => {
+    onLogin.BTN_Registrarse().click();
+    onRegistro.Nombre().type(faker.person.firstName());
+    onRegistro.Apellido().type(faker.person.lastName());
+    onRegistro.Email().type(faker.internet.email());
+    onRegistro.Password().type(Accesos.ContraseñaSinSimbolos);
+    onRegistro.ConfirmPassword().type(Accesos.ContraseñaSinSimbolos);
+
+    // Sacar comenterio cuando hagan un nuevo deploy\
+    // En QA funciona, en DEMO no.
+    onRegistro.Crear().click({ force: true });
+    onRegistro.AlertPassword().should('contain', 'La contraseña debe contener al menos un carácter especial')
+  });
+
+  it("108. Registrarse con un password que contenga menos de 8 caracteres", () => {
     onLogin.BTN_Registrarse().click();
     onRegistro.Nombre().type(faker.person.firstName());
     onRegistro.Apellido().type(faker.person.lastName());
@@ -163,11 +179,7 @@ describe(' TEST SUITE: "INICIO" --> REGISTRO ', () => {
     onRegistro.AlertPassword().should('contain', 'La contraseña debe tener al menos 8 caracteres')
   })
 
-
-
-
-
-  it("Intentar registrarse sin que coincidan las contraseñas.", () => {
+  it("109. Intentar registrarse sin que coincidan las contraseñas.", () => {
     onLogin.BTN_Registrarse().click();
     onRegistro.Nombre().type(faker.person.firstName());
     onRegistro.Apellido().type(faker.person.lastName());
@@ -177,6 +189,52 @@ describe(' TEST SUITE: "INICIO" --> REGISTRO ', () => {
     onRegistro.Crear().click({ force: true });
     onRegistro.AlertPasswordNoMatch().should("be.visible");
   });
+
+  it.skip("110. Intentar registrarse con el campo Nombre vacio", () => {
+    onLogin.BTN_Registrarse().click();
+    onRegistro.Apellido().type(faker.person.lastName());
+    onRegistro.Email().type(faker.internet.email());
+    onRegistro.Password().type(Accesos.Contraseña);
+    onRegistro.ConfirmPassword().type(Accesos.ConfirContraseña);
+    onRegistro.Crear().click({ force: true });
+  })
+
+  it.skip('111. Intentar registrarse con el campo Apellido vacio', ()=> {
+    onLogin.BTN_Registrarse().click();
+    onRegistro.Nombre().type(faker.person.firstName());
+    onRegistro.Email().type(faker.internet.email());
+    onRegistro.Password().type(Accesos.Contraseña);
+    onRegistro.ConfirmPassword().type(Accesos.ConfirContraseña);
+    onRegistro.Crear().click({ force: true });
+  })
+
+  it('112. Intentar registrarse con el campo Email vacio', ()=> {
+    onLogin.BTN_Registrarse().click();
+    onRegistro.Nombre().type(faker.person.firstName());
+    onRegistro.Apellido().type(faker.person.lastName());
+    onRegistro.Password().type(Accesos.Contraseña);
+    onRegistro.ConfirmPassword().type(Accesos.ConfirContraseña);
+    onRegistro.Crear().click({ force: true });
+  })
+
+  it('113. Intentar registrarse con el campo Password vacio', ()=> {
+    onLogin.BTN_Registrarse().click();
+    onRegistro.Nombre().type(faker.person.firstName());
+    onRegistro.Apellido().type(faker.person.lastName());
+    onRegistro.Email().type(faker.internet.email());
+    onRegistro.ConfirmPassword().type(Accesos.ConfirContraseña);
+    onRegistro.Crear().click({ force: true });
+  })
+
+  it.only('114. Intentar registrarse con el campo Confirmar Password vacio', ()=> {
+    onLogin.BTN_Registrarse().click();
+    onRegistro.Nombre().type(faker.person.firstName());
+    onRegistro.Apellido().type(faker.person.lastName());
+    onRegistro.Email().type(faker.internet.email());
+    onRegistro.Password().type(Accesos.Contraseña);
+    onRegistro.Crear().click({ force: true });
+  })
+
 });
 
 

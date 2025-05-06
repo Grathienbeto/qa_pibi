@@ -9,7 +9,7 @@ export class REGISTRO {
   Input_ConfirPassword = "#confirmPassword";
   Button_Crear = "[data-testid='submit-btn']";
   Button_Deshacer = "[data-testid='reset-btn']";
-  Text_Msj_Succefull ="Te registraste con éxito, ya podés ingresar a la plataforma.";
+  Text_Msj_Succefull = "Te registraste con éxito, ya podés ingresar a la plataforma.";
   Button_irInicio = ".round.btn.btn-primary";
   Alert_Nombre = "[data-testid='name-alert']";
   Alert_Apellido = "[data-testid='lastname-alert']";
