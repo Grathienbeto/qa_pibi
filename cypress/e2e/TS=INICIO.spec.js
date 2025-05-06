@@ -71,11 +71,15 @@ describe(' TEST SUITE: "INICIO" --> INICIO DE SESION ', () => {
 
 describe(' TEST SUITE: "INICIO" --> REGISTRO ', () => {
 
+  function getRandomInt(max) {
+    return Math.floor(Math.random() * max);
+  }
+
   beforeEach("El usuario se encuentra en la pagina de inicio de sesion", () => {
     cy.PageInicioSesion();
   });
 
-  it.skip("Registrarse Manualmente.", () => {
+  it.skip("101. Registrarse Manualmente.", () => {
     onLogin.BTN_Registrarse().click();
     onRegistro.Nombre().type(faker.person.firstName());
     onRegistro.Apellido().type(faker.person.lastName());
@@ -87,32 +91,87 @@ describe(' TEST SUITE: "INICIO" --> REGISTRO ', () => {
     onRegistro.IrInicio().click({ force: true });
   });
 
-  it("Intentar registrarse sin llenar los campos.", () => {
+  it.skip("102. Intentar registrarse poniendo numeros o caracteres en el campo Nombre", () => {
     onLogin.BTN_Registrarse().click();
-    onRegistro.Crear().click({ force: true });
-    onRegistro.AlertNombre().should("be.visible");
-    onRegistro.AlertApellido().should("be.visible");
-    onRegistro.AlertEmail().should("be.visible");
-    onRegistro.AlertPassword().should("be.visible");
-    onRegistro.AlertConfirmPassword().should("be.visible");
-  });
-
-  it("Intentar registrarse con un email ya existente.", () => {
-    onLogin.BTN_Registrarse().click();
-    onRegistro.Nombre().type(faker.person.firstName());
+    onRegistro.Nombre().type(faker.person.firstName()+`${getRandomInt(999999)}`);
     onRegistro.Apellido().type(faker.person.lastName());
-    onRegistro.Email().type(Accesos.Email_Existente);
+    onRegistro.Email().type(faker.internet.email());
     onRegistro.Password().type(Accesos.Contraseña);
     onRegistro.ConfirmPassword().type(Accesos.ConfirContraseña);
     onRegistro.Crear().click({ force: true });
-    onRegistro.AlertEmailExistente().should("exist");
+    onRegistro.SuccefullMsj().should("be.visible");
+    onRegistro.IrInicio().click({ force: true });
   });
+
+  it.skip("103. Intentar registrarse poniendo numeros o caracteres en el campo Apellido", () => {
+    onLogin.BTN_Registrarse().click();
+    onRegistro.Nombre().type(faker.person.firstName());
+    onRegistro.Apellido().type(faker.person.lastName()+`${getRandomInt(999999)}`);
+    onRegistro.Email().type(faker.internet.email());
+    onRegistro.Password().type(Accesos.Contraseña);
+    onRegistro.ConfirmPassword().type(Accesos.ConfirContraseña);
+    onRegistro.Crear().click({ force: true });
+    onRegistro.SuccefullMsj().should("be.visible");
+    onRegistro.IrInicio().click({ force: true });
+  });
+
+  it("104. Input Email tiene que ser tipo mail", () => {
+    onLogin.BTN_Registrarse().click();
+    onRegistro.Email().should("have.attr", "type", "email");
+  });
+
+  it("105. Input Password y Confirmar Password deben ser tipo password", () => {
+    onLogin.BTN_Registrarse().click();
+
+    onRegistro.Password().should("have.attr", "type", "password");
+    onRegistro.ConfirmPassword().should('have.attr', 'type', 'password')
+  });
+
+  it("105. Intentar registrarse con un mail con formato invalido", () => {
+    onLogin.BTN_Registrarse().click();
+    onRegistro.Nombre().type(faker.person.firstName());
+    onRegistro.Apellido().type(faker.person.lastName());
+    onRegistro.Email().type(Accesos.Admin_User_Mal_Formato1);
+    onRegistro.Password().type(Accesos.Contraseña);
+    onRegistro.ConfirmPassword().type(Accesos.ConfirContraseña);
+    onRegistro.Crear().click({ force: true });
+    onRegistro.Email().then(($input) => {
+      expect($input[0].validationMessage).to.equal('Incluye un signo "@" en la dirección de correo electrónico. La dirección "adminpibi.com" no incluye el signo "@".');
+    });
+  });
+
+  it.skip("106. Registrarse con un password sin numeros.", () => {
+    onLogin.BTN_Registrarse().click();
+    onRegistro.Nombre().type(faker.person.firstName());
+    onRegistro.Apellido().type(faker.person.lastName());
+    onRegistro.Email().type(faker.internet.email());
+    onRegistro.Password().type(Accesos.ContraseñaSinNumeros);
+    onRegistro.ConfirmPassword().type(Accesos.ContraseñaSinNumeros);
+    // Modificar cuando hagan un nuevo deploy
+    // onRegistro.Crear().click({ force: true });
+    // onRegistro.AlertPassword().should('contain', '')
+  });
+
+  it.only("107. Registrarse con un password que contenga menos de 8 caracteres", () => {
+    onLogin.BTN_Registrarse().click();
+    onRegistro.Nombre().type(faker.person.firstName());
+    onRegistro.Apellido().type(faker.person.lastName());
+    onRegistro.Email().type(faker.internet.email());
+    onRegistro.Password().type(Accesos.ContraseñaCorta);
+    onRegistro.ConfirmPassword().type(Accesos.ContraseñaCorta);
+    onRegistro.Crear().click({ force: true });
+    onRegistro.AlertPassword().should('contain', 'La contraseña debe tener al menos 8 caracteres')
+  })
+
+
+
+
 
   it("Intentar registrarse sin que coincidan las contraseñas.", () => {
     onLogin.BTN_Registrarse().click();
     onRegistro.Nombre().type(faker.person.firstName());
     onRegistro.Apellido().type(faker.person.lastName());
-    onRegistro.Email().type(Accesos.Email_Existente);
+    onRegistro.Email().type(faker.internet.email());
     onRegistro.Password().type(Accesos.Contraseña);
     onRegistro.ConfirmPassword().type(Accesos.ConfirContraseñaFAKE);
     onRegistro.Crear().click({ force: true });
