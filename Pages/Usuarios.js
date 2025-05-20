@@ -19,49 +19,25 @@ export class USUARIOS {
 
   //METODOS Y/O FUNCIONES //
 
-  Title_Usuarios() {
-    return cy.contains(this.H1_Title_Usuarios, { timeout: 5000 });
-  }
-  CrearUsuario() {
-    return cy.get(this.Class_CrearUsuario);
-  }
-  NombreUser() {
-    return cy.get(this.ID_Nombre_User);
-  }
-  EmailUser() {
-    return cy
+  Title_Usuarios() {return cy.contains(this.H1_Title_Usuarios, { timeout: 5000 })}
+  CrearUsuario() {return cy.get(this.Class_CrearUsuario)}
+  NombreUser() {return cy.get(this.ID_Nombre_User)}
+  EmailUser() {return cy
       .get(this.ID_Email_User)
-      .contains("pruebafranco2@proton.me", { timeout: 5000 });
-  }
-  EstadoUser() {
-    return cy.get(this.ID_Estado_User);
-  }
+      .contains("pruebafranco2@proton.me", { timeout: 5000 })}
+  EstadoUser() {return cy.get(this.ID_Estado_User)}
   TipoUser() {
     return cy
       .get(this.ID_TipodeUsuario_User)
       .contains("User", { timeout: 5000 });
   }
-  BTN_Pause() {
-    return cy.get(this.Button_Accion_Pause);
-  }
-  BTN_Editar() {
-    return cy.get(this.Button_Accion_Editar);
-  }
-  Search() {
-    return cy.get(this.Input_Search);
-  }
-  TablaDeUsuarios() {
-    return cy.get(this.Users_Table);
-  }
-  FiltroxEstado() {
-    return cy.get(this.Button_Filtro);
-  }
-  EstadoActivo() {
-    return cy.contains(this.Text_DropDown_Activo);
-  }
-  SpanFiltrado() {
-    return cy.get(this.SpanButtonFiltrado);
-  }
+  BTN_Pause() {return cy.get(this.Button_Accion_Pause)}
+  BTN_Editar() {return cy.get(this.Button_Accion_Editar)}
+  Search() {return cy.get(this.Input_Search)}
+  TablaDeUsuarios() {return cy.get(this.Users_Table)}
+  FiltroxEstado() {return cy.get(this.Button_Filtro)}
+  EstadoActivo() {return cy.contains(this.Text_DropDown_Activo)}
+  SpanFiltrado() {return cy.get(this.SpanButtonFiltrado)}
 }
 
 export const onUsuarios = new USUARIOS()

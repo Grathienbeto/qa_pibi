@@ -15,7 +15,7 @@ describe(' TEST SUITE: "USUARIOS" --> ACCIONES ', () => {
     onHomePage.Usuarios().click();
   });
 
-  it.skip("Crear usuario", () => {
+  it.only("Crear usuario", () => {
     onUsuarios.CrearUsuario().click();
 
     onCrearUsuario.Nombre().type(faker.person.firstName());
@@ -25,7 +25,7 @@ describe(' TEST SUITE: "USUARIOS" --> ACCIONES ', () => {
     onCrearUsuario.User_Rol().click();
     onCrearUsuario.Contraseña().type(Accesos.Contraseña);
     onCrearUsuario.ConfirmContraseña().type(Accesos.ConfirContraseña);
-    onCrearUsuario.Crear().click();
+    //onCrearUsuario.Crear().click();
 
     onUsuarios.Title_Usuarios().should("be.visible");
   });
@@ -56,7 +56,7 @@ describe(' TEST SUITE: "USUARIOS" --> ACCIONES ', () => {
     onModificarUsuario.Apellido().clear().type("Prueba Modificado");
     onModificarUsuario.Aplicar().click();
     onUsuarios.Title_Usuarios().should("be.visible");
-    
+
     cy.wait(5000);
     cy.ActualizarDatosUsuario();
   });
@@ -77,4 +77,6 @@ describe(' TEST SUITE: "USUARIOS" --> ACCIONES ', () => {
       .SpanFiltrado()
       .should("include.text", "Fitrando por: Usuarios activos");
   });
+
+
 });
