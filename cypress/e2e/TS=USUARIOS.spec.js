@@ -1,83 +1,79 @@
 /// <reference types="cypress" />
 import { faker } from "@faker-js/faker";
-
-import { HOME } from "../../Pages/HomePage";
 import Accesos from "../fixtures/Accesos.json";
-import { USUARIOS } from "../../Pages/Usuarios";
-import { CREAR_USUARIO } from "../../Pages/CrearUsuario";
-import { MODIFICAR_USUARIO } from "../../Pages/ModificarUsuario";
+import { onHomePage } from "../../Pages/HomePage";
+import { onUsuarios } from "../../Pages/Usuarios";
+import { onCrearUsuario } from "../../Pages/CrearUsuario";
+import { onModificarUsuario } from '../../Pages/ModificarUsuario'
+
 
 describe(' TEST SUITE: "USUARIOS" --> ACCIONES ', () => {
-  const home = new HOME();
-  const usuarios = new USUARIOS();
-  const NuevoUsuario = new CREAR_USUARIO();
-  const ModificarUsuario = new MODIFICAR_USUARIO();
 
   beforeEach("El usuario se encuentra en la pagina de inicio de sesion", () => {
     cy.PageInicioSesion();
     cy.IniciarSesion();
-    home.Usuarios().click();
+    onHomePage.Usuarios().click();
   });
 
   it.skip("Crear usuario", () => {
-    usuarios.CrearUsuario().click();
+    onUsuarios.CrearUsuario().click();
 
-    NuevoUsuario.Nombre().type(faker.person.firstName());
-    NuevoUsuario.Apellido().type(faker.person.lastName());
-    NuevoUsuario.Email().type(faker.internet.email());
-    NuevoUsuario.Rol().click();
-    NuevoUsuario.User_Rol().click();
-    NuevoUsuario.Contraseña().type(Accesos.Contraseña);
-    NuevoUsuario.ConfirmContraseña().type(Accesos.ConfirContraseña);
-    NuevoUsuario.Crear().click();
+    onCrearUsuario.Nombre().type(faker.person.firstName());
+    onCrearUsuario.Apellido().type(faker.person.lastName());
+    onCrearUsuario.Email().type(faker.internet.email());
+    onCrearUsuario.Rol().click();
+    onCrearUsuario.User_Rol().click();
+    onCrearUsuario.Contraseña().type(Accesos.Contraseña);
+    onCrearUsuario.ConfirmContraseña().type(Accesos.ConfirContraseña);
+    onCrearUsuario.Crear().click();
 
-    usuarios.Title_Usuarios().should("be.visible");
+    onUsuarios.Title_Usuarios().should("be.visible");
   });
 
   it("Actualizar Estado de un Usuario", () => {
-    usuarios
+    onUsuarios
       .NombreUser()
       .contains("Prueba Prueba", { timeout: 10000 })
       .should("be.visible");
-    usuarios.EmailUser().should("be.visible");
-    usuarios.TipoUser().should("be.visible");
-    usuarios.EstadoUser().contains("Activo").should("exist");
+    onUsuarios.EmailUser().should("be.visible");
+    onUsuarios.TipoUser().should("be.visible");
+    onUsuarios.EstadoUser().contains("Activo").should("exist");
 
-    usuarios.BTN_Pause().click();
+    onUsuarios.BTN_Pause().click();
 
-    usuarios.EstadoUser().contains("Pausado").should("exist");
+    onUsuarios.EstadoUser().contains("Pausado").should("exist");
     cy.ActualizarEstadoActivo();
   });
 
   it("Modificar datos de un Usuario", () => {
-    usuarios
+    onUsuarios
       .NombreUser()
       .contains("Prueba Prueba", { timeout: 10000 })
       .should("be.visible");
 
-    usuarios.BTN_Editar().click();
-
-    ModificarUsuario.Nombre().clear().type("Prueba");
-    ModificarUsuario.Apellido().clear().type("Prueba Modificado");
-    ModificarUsuario.Aplicar().click();
-    usuarios.Title_Usuarios().should("be.visible");
+    onUsuarios.BTN_Editar().click();
+    onModificarUsuario.Nombre().clear().type("Prueba");
+    onModificarUsuario.Apellido().clear().type("Prueba Modificado");
+    onModificarUsuario.Aplicar().click();
+    onUsuarios.Title_Usuarios().should("be.visible");
+    
     cy.wait(5000);
     cy.ActualizarDatosUsuario();
   });
 
   it("Buscar Usuario", () => {
-    usuarios.Title_Usuarios().should("be.visible");
-    usuarios.Search().type("Igna Barrau");
+    onUsuarios.Title_Usuarios().should("be.visible");
+    onUsuarios.Search().type("Igna Barrau");
 
-    usuarios.TablaDeUsuarios().should("include.text", "Igna Barrau");
+    onUsuarios.TablaDeUsuarios().should("include.text", "Igna Barrau");
   });
 
   it("Filtrar por Estado", () => {
-    usuarios.Title_Usuarios().should("be.visible");
-    usuarios.FiltroxEstado().click();
-    usuarios.EstadoActivo().click();
+    onUsuarios.Title_Usuarios().should("be.visible");
+    onUsuarios.FiltroxEstado().click();
+    onUsuarios.EstadoActivo().click();
 
-    usuarios
+    onUsuarios
       .SpanFiltrado()
       .should("include.text", "Fitrando por: Usuarios activos");
   });

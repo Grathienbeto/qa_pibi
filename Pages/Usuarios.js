@@ -63,3 +63,5 @@ export class USUARIOS {
     return cy.get(this.SpanButtonFiltrado);
   }
 }
+
+export const onUsuarios = new USUARIOS()

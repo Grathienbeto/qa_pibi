@@ -23,5 +23,6 @@ export class CREAR_USUARIO{
     ConfirmContraseña(){return cy.get(this.Input_ConfirmContraseña)}
     Crear(){return cy.get(this.Button_Crear)}
 
-
 }
+
+export const onCrearUsuario = new CREAR_USUARIO()

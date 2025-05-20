@@ -15,3 +15,5 @@ export class MODIFICAR_USUARIO{
     Aplicar(){return cy.contains(this.Button_Aplicar)}
 
 }
+
+export const onModificarUsuario = new MODIFICAR_USUARIO()
