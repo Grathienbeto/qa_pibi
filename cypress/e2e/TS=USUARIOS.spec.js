@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
-
 import { faker } from "@faker-js/faker";
+
 import { HOME } from "../../Pages/HomePage";
 import Accesos from "../fixtures/Accesos.json";
 import { USUARIOS } from "../../Pages/Usuarios";

@@ -71,13 +71,12 @@ describe(' TEST SUITE: "INICIO" --> INICIO DE SESION ', () => {
     onLogin.Modal_PasswordOlvidada().should('exist')
   })
 
-  it("013. Boton '¿Olvidaste la contraseña?' muestra el popup para cambiar la contraseña", () => {
+  it.skip("014. Intentar recuperar la contraseña de un mail correcto", () => {
     onLogin.BTN_OlvidastePassword().click()
     onLogin.Modal_PasswordOlvidada().should('exist')
     // RECORDAR CAMBIAR EL MAIL PAR Q NO SEA VISIBLE
-    onLogin.Modal_EmailInput().type('betoluna89@gmail.com')
-    onLogin.Modal_BTN_Submit()
-
+    onLogin.Modal_EmailInput().last().type('betoluna89@gmail.com')
+    onLogin.Modal_PasswordOlvidada().find(onLogin.Modal_BTN_Submit).click()
   })
 
   it("015. Intentar recuperar la contraseña de un mail que no este asociado a ningun usuario", () => {
@@ -151,7 +150,7 @@ describe(' TEST SUITE: "INICIO" --> INICIO DE SESION ', () => {
     onLogin.Alert_ErrorOcurred().should('exist')
   })
 
-  it.only("023. Ingresar un Token que no contenga solo numeros", () => {
+  it("023. Ingresar un Token que no contenga solo numeros", () => {
     onLogin.BTN_OlvidastePassword().click()
     // RECORDAR CAMBIAR EL MAIL PAR Q NO SEA VISIBLE
     onLogin.Modal_PasswordOlvidada().find(onLogin.Modal_Email_Input).type('betoluna89@gmail.com')
@@ -161,8 +160,6 @@ describe(' TEST SUITE: "INICIO" --> INICIO DE SESION ', () => {
     onLogin.Modal_EmailIncorrect().should('exist')
     onLogin.Modal_EmailIncorrect().should('contain', 'El campo código es requerido')
   })
-
-
 
 });
 
@@ -288,22 +285,26 @@ describe(' TEST SUITE: "INICIO" --> REGISTRO ', () => {
     onRegistro.AlertPasswordNoMatch().should("be.visible");
   });
 
-  it.skip("110. Intentar registrarse con el campo Nombre vacio", () => {
+  it("110. Intentar registrarse con el campo Nombre vacio", () => {
     onLogin.BTN_Registrarse().click();
     onRegistro.Apellido().type(faker.person.lastName());
     onRegistro.Email().type(faker.internet.email());
     onRegistro.Password().type(Accesos.Contraseña);
     onRegistro.ConfirmPassword().type(Accesos.ConfirContraseña);
     onRegistro.Crear().click({ force: true });
+    onRegistro.AlertNombre().should('exist')
+    onRegistro.AlertNombre().should('contain', 'El campo nombre es requerido')
   })
 
-  it.skip('111. Intentar registrarse con el campo Apellido vacio', ()=> {
+  it('111. Intentar registrarse con el campo Apellido vacio', ()=> {
     onLogin.BTN_Registrarse().click();
     onRegistro.Nombre().type(faker.person.firstName());
     onRegistro.Email().type(faker.internet.email());
     onRegistro.Password().type(Accesos.Contraseña);
     onRegistro.ConfirmPassword().type(Accesos.ConfirContraseña);
     onRegistro.Crear().click({ force: true });
+    onRegistro.AlertApellido().should('exist')
+    onRegistro.AlertApellido().should('contain', 'El campo apellido es requerido')
   })
 
   it('112. Intentar registrarse con el campo Email vacio', ()=> {
@@ -333,17 +334,28 @@ describe(' TEST SUITE: "INICIO" --> REGISTRO ', () => {
     onRegistro.Crear().click({ force: true });
   })
 
-
-  // TO DO
   it('115. Boton "deshacer" limpia todo el formulario', ()=> {
     onLogin.BTN_Registrarse().click();
+    onRegistro.Nombre().type(faker.person.firstName());
+    onRegistro.Apellido().type(faker.person.lastName());
+    onRegistro.Email().type(faker.internet.email());
+    onRegistro.Password().type(Accesos.Contraseña);
+    onRegistro.ConfirmPassword().type(Accesos.ConfirContraseña);
+
+    onRegistro.BTN_DeshacerTodo().click()
+
+    onRegistro.Nombre().should('be.empty')
+    onRegistro.Apellido().should('be.empty')
+    onRegistro.Email().should('be.empty')
+    onRegistro.Password().should('be.empty')
+    onRegistro.ConfirmPassword().should('be.empty')
   })
 
   it('116. Boton "Volver a inicio" vuelve al Login', ()=> {
     onLogin.BTN_Registrarse().click();
+    onRegistro.VolverAInicio().click()
+    cy.title().should("contain", "PI BI");
   })
-
-
 
 });
 

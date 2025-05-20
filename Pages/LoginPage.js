@@ -3,7 +3,7 @@ export class LOGIN {
   // SELECTORES //
   input_user = "#username";
   input_password = "#password";
-  Button_IniciarSesion = "div.modal-content";
+  Button_IniciarSesion = '[data-testid="submit-btn"]';
   Logo_Pibi = "[alt='logo']";
   Button_MostrarPassword = 'span.cursor-pointer.input-group-text'
   Button_Registrarse = "Registrarse";
@@ -16,7 +16,7 @@ export class LOGIN {
   Alert_Text_DatosIncorrectos = "Usuario o contraseña incorrectos";
   Alert_Text_Error = 'Hubo un error'
   Username_AlertText = "El usuario es requerido";
-  Password_AlertText = "El password es requerido";
+  Password_AlertText = "La contraseña es requerida";
   
 
   // GETTERS //
@@ -44,6 +44,7 @@ export class LOGIN {
   Modal_TokenInput(){
     return cy.get(this.Modal_Token_Input)
   }
+
 
   // METODOS //
   loginUser(user, password){

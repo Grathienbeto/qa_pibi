@@ -18,6 +18,8 @@ export class REGISTRO {
   Alert_ConfirPassword = "[data-testid='confirmpassword-alert']";
   Alert_EmailExistente = "User already exists";
   Alert_Text_PasswordNOCoinciden = "Las contraseñas deben ser iguales";
+  BTN_Deshacer = '[data-testid="reset-btn"]'
+  Volver_A_Inicio = 'Volver al inicio'
 
   // GETTERS //
   Nombre() {return cy.get(this.Input_Nombre);}
@@ -35,6 +37,9 @@ export class REGISTRO {
   AlertConfirmPassword() {return cy.get(this.Alert_ConfirPassword);}
   AlertEmailExistente() {return cy.contains(this.Alert_EmailExistente, { timeout: 20000 });}
   AlertPasswordNoMatch() {return cy.contains(this.Alert_Text_PasswordNOCoinciden);}
+  BTN_DeshacerTodo() {return cy.get(this.BTN_Deshacer)}
+  VolverAInicio() {return cy.contains(this.Volver_A_Inicio)}
+
 }
 
 export const onRegistro = new REGISTRO()
