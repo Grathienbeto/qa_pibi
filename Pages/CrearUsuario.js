@@ -15,7 +15,7 @@ export class CREAR_USUARIO{
     Error_Password_Sin_Simbolos = 'La contraseña debe contener al menos un carácter especial'
     Error_Password_Sin_Mayusculas = 'La contraseña debe contener al menos una letra mayúscula'
     Error_Password_Corta = 'La contraseña debe tener al menos 8 caracteres'
-
+    Error_Password_Iguales = 'Las contraseñas deben ser iguales'
 
     //METODOS Y/O FUNCIONES //
 
@@ -32,6 +32,7 @@ export class CREAR_USUARIO{
     ErrorPasswordSinSimbolos() {return cy.contains(this.Error_Password_Sin_Simbolos)}
     ErrorPasswordSinMayusculas() {return cy.contains(this.Error_Password_Sin_Mayusculas)}
     ErrorPasswordCorta() {return cy.contains(this.Error_Password_Corta)}
+    ErrorPasswordIguales(){return cy.contains(this.Error_Password_Iguales)}
     
 }
 

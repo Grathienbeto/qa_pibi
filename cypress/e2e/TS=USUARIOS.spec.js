@@ -112,7 +112,7 @@ describe(' TEST SUITE: "USUARIOS" --> ACCIONES ', () => {
     onCrearUsuario.ErrorPasswordSinMayusculas().should('exist')
   })
 
-  it.only('210. Crear un usuario con un password con menos de 8 caracteres', ()=> {
+  it('210. Crear un usuario con un password con menos de 8 caracteres', ()=> {
     onUsuarios.CrearUsuario().click();
     onCrearUsuario.Nombre().type(faker.person.firstName());
     onCrearUsuario.Apellido().type(faker.person.lastName());
@@ -125,6 +125,24 @@ describe(' TEST SUITE: "USUARIOS" --> ACCIONES ', () => {
 
     onCrearUsuario.ErrorPasswordCorta().should('exist')
   })
+
+  it.only('211. Intentar crear un usuario sin que coincidan las contraseñas.', ()=> {
+    onUsuarios.CrearUsuario().click();
+    onCrearUsuario.Nombre().type(faker.person.firstName());
+    onCrearUsuario.Apellido().type(faker.person.lastName());
+    onCrearUsuario.Email().type(faker.internet.email());
+    onCrearUsuario.Rol().click();
+    onCrearUsuario.User_Rol().click();
+    onCrearUsuario.Contraseña().type(Accesos.Contraseña);
+    onCrearUsuario.ConfirmContraseña().type(Accesos.Contraseña+'A3#');
+    onCrearUsuario.Crear().click();
+
+    onCrearUsuario.ErrorPasswordIguales().should('exist')
+  })
+
+
+
+  
 
   
 
