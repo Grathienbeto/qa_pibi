@@ -2,6 +2,7 @@ export class USUARIOS {
   //SELECTORES//
 
   H1_Title_Usuarios = "Lista de Usuarios";
+  H1_Title_Nuevo_Usuario = 'Nuevo Usuario'
   Class_CrearUsuario =
     ".waves-effect.btn-icon.round.ms-auto.me-1.mb-1.btn.btn-primary";
   ID_Nombre_User = "#cell-1-3390bbb3-da0c-46e5-8211-6a4a5aa3a043";
@@ -20,6 +21,7 @@ export class USUARIOS {
   //METODOS Y/O FUNCIONES //
 
   Title_Usuarios() {return cy.contains(this.H1_Title_Usuarios, { timeout: 5000 })}
+  Title_NuevoUsuario() {return cy.contains(this.H1_Title_Nuevo_Usuario, {timeout: 5000})}
   CrearUsuario() {return cy.get(this.Class_CrearUsuario)}
   NombreUser() {return cy.get(this.ID_Nombre_User)}
   EmailUser() {return cy
@@ -38,6 +40,7 @@ export class USUARIOS {
   FiltroxEstado() {return cy.get(this.Button_Filtro)}
   EstadoActivo() {return cy.contains(this.Text_DropDown_Activo)}
   SpanFiltrado() {return cy.get(this.SpanButtonFiltrado)}
+
 }
 
 export const onUsuarios = new USUARIOS()

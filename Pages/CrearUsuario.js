@@ -11,6 +11,11 @@ export class CREAR_USUARIO{
     Input_ConfirmContraseña="#confirmPassword"
     Button_Crear= ".round.btn.btn-primary"
 
+    Error_Password_Sin_Numeros = 'La contraseña debe contener al menos un número'
+    Error_Password_Sin_Simbolos = 'La contraseña debe contener al menos un carácter especial'
+    Error_Password_Sin_Mayusculas = 'La contraseña debe contener al menos una letra mayúscula'
+    Error_Password_Corta = 'La contraseña debe tener al menos 8 caracteres'
+
 
     //METODOS Y/O FUNCIONES //
 
@@ -23,6 +28,11 @@ export class CREAR_USUARIO{
     ConfirmContraseña(){return cy.get(this.Input_ConfirmContraseña)}
     Crear(){return cy.get(this.Button_Crear)}
 
+    ErrorPasswordSinNumero() {return cy.contains(this.Error_Password_Sin_Numeros)}
+    ErrorPasswordSinSimbolos() {return cy.contains(this.Error_Password_Sin_Simbolos)}
+    ErrorPasswordSinMayusculas() {return cy.contains(this.Error_Password_Sin_Mayusculas)}
+    ErrorPasswordCorta() {return cy.contains(this.Error_Password_Corta)}
+    
 }
 
 export const onCrearUsuario = new CREAR_USUARIO()

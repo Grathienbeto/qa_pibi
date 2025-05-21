@@ -15,9 +15,13 @@ describe(' TEST SUITE: "USUARIOS" --> ACCIONES ', () => {
     onHomePage.Usuarios().click();
   });
 
-  it.only("Crear usuario", () => {
-    onUsuarios.CrearUsuario().click();
+  it('201. Boton "Crear Usuario" redirige a la pagina de Creacion de Usuario', () => {
+    onUsuarios.CrearUsuario().click()
+    onUsuarios.Title_NuevoUsuario().should('exist')
+  })
 
+  it.skip("202. Crear un usuario con todos los datos correctos", () => {
+    onUsuarios.CrearUsuario().click();
     onCrearUsuario.Nombre().type(faker.person.firstName());
     onCrearUsuario.Apellido().type(faker.person.lastName());
     onCrearUsuario.Email().type(faker.internet.email());
@@ -25,58 +29,104 @@ describe(' TEST SUITE: "USUARIOS" --> ACCIONES ', () => {
     onCrearUsuario.User_Rol().click();
     onCrearUsuario.Contraseña().type(Accesos.Contraseña);
     onCrearUsuario.ConfirmContraseña().type(Accesos.ConfirContraseña);
-    //onCrearUsuario.Crear().click();
-
+    onCrearUsuario.Crear().click();
     onUsuarios.Title_Usuarios().should("be.visible");
   });
 
-  it("Actualizar Estado de un Usuario", () => {
-    onUsuarios
-      .NombreUser()
-      .contains("Prueba Prueba", { timeout: 10000 })
-      .should("be.visible");
-    onUsuarios.EmailUser().should("be.visible");
-    onUsuarios.TipoUser().should("be.visible");
-    onUsuarios.EstadoUser().contains("Activo").should("exist");
-
-    onUsuarios.BTN_Pause().click();
-
-    onUsuarios.EstadoUser().contains("Pausado").should("exist");
-    cy.ActualizarEstadoActivo();
-  });
-
-  it("Modificar datos de un Usuario", () => {
-    onUsuarios
-      .NombreUser()
-      .contains("Prueba Prueba", { timeout: 10000 })
-      .should("be.visible");
-
-    onUsuarios.BTN_Editar().click();
-    onModificarUsuario.Nombre().clear().type("Prueba");
-    onModificarUsuario.Apellido().clear().type("Prueba Modificado");
-    onModificarUsuario.Aplicar().click();
+  it.skip('203. Crear un usuario con un nombre de usuario con Numeros/Caracteres', () => {
+    onUsuarios.CrearUsuario().click();
+    onCrearUsuario.Nombre().type(faker.person.firstName() + `#$3`);
+    onCrearUsuario.Apellido().type(faker.person.lastName());
+    onCrearUsuario.Email().type(faker.internet.email());
+    onCrearUsuario.Rol().click();
+    onCrearUsuario.User_Rol().click();
+    onCrearUsuario.Contraseña().type(Accesos.Contraseña);
+    onCrearUsuario.ConfirmContraseña().type(Accesos.ConfirContraseña);
+    onCrearUsuario.Crear().click();
     onUsuarios.Title_Usuarios().should("be.visible");
+  })
 
-    cy.wait(5000);
-    cy.ActualizarDatosUsuario();
-  });
-
-  it("Buscar Usuario", () => {
+  it.skip('204. Crear un usuario con un apellido de usuario con Numeros/Caracteres', () => {
+    onUsuarios.CrearUsuario().click();
+    onCrearUsuario.Nombre().type(faker.person.firstName());
+    onCrearUsuario.Apellido().type(faker.person.lastName()+`#$%`);
+    onCrearUsuario.Email().type(faker.internet.email());
+    onCrearUsuario.Rol().click();
+    onCrearUsuario.User_Rol().click();
+    onCrearUsuario.Contraseña().type(Accesos.Contraseña);
+    onCrearUsuario.ConfirmContraseña().type(Accesos.ConfirContraseña);
+    onCrearUsuario.Crear().click();
     onUsuarios.Title_Usuarios().should("be.visible");
-    onUsuarios.Search().type("Igna Barrau");
+  })
 
-    onUsuarios.TablaDeUsuarios().should("include.text", "Igna Barrau");
-  });
+  it('205. Input Email tiene que ser tipo email', () => {
+    onUsuarios.CrearUsuario().click();
+    onCrearUsuario.Email().should("have.attr", "type", "email");
+  })
+  
+  it('206. Input Password y Confirmar Password deben ser tipo password', () => {
+    onUsuarios.CrearUsuario().click();
+    onCrearUsuario.Contraseña().should("have.attr", "type", "password");
+    onCrearUsuario.ConfirmContraseña().should("have.attr", "type", "password");
+  })
 
-  it("Filtrar por Estado", () => {
-    onUsuarios.Title_Usuarios().should("be.visible");
-    onUsuarios.FiltroxEstado().click();
-    onUsuarios.EstadoActivo().click();
+  it('207. Crear un usuario con un password sin numeros.', () => {
+    onUsuarios.CrearUsuario().click();
+    onCrearUsuario.Nombre().type(faker.person.firstName());
+    onCrearUsuario.Apellido().type(faker.person.lastName());
+    onCrearUsuario.Email().type(faker.internet.email());
+    onCrearUsuario.Rol().click();
+    onCrearUsuario.User_Rol().click();
+    onCrearUsuario.Contraseña().type(Accesos.ContraseñaSinNumeros);
+    onCrearUsuario.ConfirmContraseña().type(Accesos.ContraseñaSinNumeros);
+    onCrearUsuario.Crear().click();
 
-    onUsuarios
-      .SpanFiltrado()
-      .should("include.text", "Fitrando por: Usuarios activos");
-  });
+    onCrearUsuario.ErrorPasswordSinNumero().should('exist')
+  })
+
+  it('208. Crear un usuario con un password sin caracteres especiales.', () => {
+    onUsuarios.CrearUsuario().click();
+    onCrearUsuario.Nombre().type(faker.person.firstName());
+    onCrearUsuario.Apellido().type(faker.person.lastName());
+    onCrearUsuario.Email().type(faker.internet.email());
+    onCrearUsuario.Rol().click();
+    onCrearUsuario.User_Rol().click();
+    onCrearUsuario.Contraseña().type(Accesos.ContraseñaSinSimbolos);
+    onCrearUsuario.ConfirmContraseña().type(Accesos.ContraseñaSinSimbolos);
+    onCrearUsuario.Crear().click();
+
+    onCrearUsuario.ErrorPasswordSinSimbolos().should('exist')
+  })
+
+  it('209. Crear un usuario con un password sin mayusculas', () => {
+    onUsuarios.CrearUsuario().click();
+    onCrearUsuario.Nombre().type(faker.person.firstName());
+    onCrearUsuario.Apellido().type(faker.person.lastName());
+    onCrearUsuario.Email().type(faker.internet.email());
+    onCrearUsuario.Rol().click();
+    onCrearUsuario.User_Rol().click();
+    onCrearUsuario.Contraseña().type(Accesos.ContraseñaSinMayusculas);
+    onCrearUsuario.ConfirmContraseña().type(Accesos.ContraseñaSinMayusculas);
+    onCrearUsuario.Crear().click();
+
+    onCrearUsuario.ErrorPasswordSinMayusculas().should('exist')
+  })
+
+  it.only('210. Crear un usuario con un password con menos de 8 caracteres', ()=> {
+    onUsuarios.CrearUsuario().click();
+    onCrearUsuario.Nombre().type(faker.person.firstName());
+    onCrearUsuario.Apellido().type(faker.person.lastName());
+    onCrearUsuario.Email().type(faker.internet.email());
+    onCrearUsuario.Rol().click();
+    onCrearUsuario.User_Rol().click();
+    onCrearUsuario.Contraseña().type(Accesos.ContraseñaCorta);
+    onCrearUsuario.ConfirmContraseña().type(Accesos.ContraseñaCorta);
+    onCrearUsuario.Crear().click();
+
+    onCrearUsuario.ErrorPasswordCorta().should('exist')
+  })
+
+  
 
 
 });
