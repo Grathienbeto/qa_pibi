@@ -126,7 +126,7 @@ describe(' TEST SUITE: "USUARIOS" --> ACCIONES ', () => {
     onCrearUsuario.ErrorPasswordCorta().should('exist')
   })
 
-  it.only('211. Intentar crear un usuario sin que coincidan las contraseñas.', ()=> {
+  it('211. Intentar crear un usuario sin que coincidan las contraseñas.', ()=> {
     onUsuarios.CrearUsuario().click();
     onCrearUsuario.Nombre().type(faker.person.firstName());
     onCrearUsuario.Apellido().type(faker.person.lastName());
@@ -139,6 +139,113 @@ describe(' TEST SUITE: "USUARIOS" --> ACCIONES ', () => {
 
     onCrearUsuario.ErrorPasswordIguales().should('exist')
   })
+
+  it("212. Intentar crear un usuario con el campo Nombre vacio", () => {
+    onUsuarios.CrearUsuario().click();
+    onCrearUsuario.Apellido().type(faker.person.lastName());
+    onCrearUsuario.Email().type(faker.internet.email());
+    onCrearUsuario.Rol().click();
+    onCrearUsuario.User_Rol().click();
+    onCrearUsuario.Contraseña().type(Accesos.Contraseña);
+    onCrearUsuario.ConfirmContraseña().type(Accesos.ConfirContraseña);
+    onCrearUsuario.Crear().click();
+    
+    onCrearUsuario.ErrorNombreObligatorio().should('exist')
+  });
+
+  it("213. Intentar crear un usuario con el campo Apellido vacio", () => {
+    onUsuarios.CrearUsuario().click();
+    onCrearUsuario.Nombre().type(faker.person.firstName());
+    onCrearUsuario.Email().type(faker.internet.email());
+    onCrearUsuario.Rol().click();
+    onCrearUsuario.User_Rol().click();
+    onCrearUsuario.Contraseña().type(Accesos.Contraseña);
+    onCrearUsuario.ConfirmContraseña().type(Accesos.ConfirContraseña);
+    onCrearUsuario.Crear().click();
+    
+    onCrearUsuario.ErrorApellidoObligatorio().should('exist')
+  });
+
+  it("214. Intentar crear un usuario con el campo Email vacio", () => {
+    onUsuarios.CrearUsuario().click();
+    onCrearUsuario.Nombre().type(faker.person.firstName());
+    onCrearUsuario.Apellido().type(faker.person.lastName());
+    onCrearUsuario.Rol().click();
+    onCrearUsuario.User_Rol().click();
+    onCrearUsuario.Contraseña().type(Accesos.Contraseña);
+    onCrearUsuario.ConfirmContraseña().type(Accesos.ConfirContraseña);
+    onCrearUsuario.Crear().click();
+    
+    onCrearUsuario.ErrorEmailObligatorio().should('exist')
+  });
+
+  it("215. Intentar crear un usuario con el campo Password vacio", () => {
+    onUsuarios.CrearUsuario().click();
+    onCrearUsuario.Nombre().type(faker.person.firstName());
+    onCrearUsuario.Apellido().type(faker.person.lastName());
+    onCrearUsuario.Email().type(faker.internet.email());
+    onCrearUsuario.Rol().click();
+    onCrearUsuario.User_Rol().click();
+    onCrearUsuario.ConfirmContraseña().type(Accesos.ConfirContraseña);
+    onCrearUsuario.Crear().click();
+    
+    onCrearUsuario.ErrorPasswordCorta().should('exist')
+  });
+
+  it("216. Intentar crear un usuario con el campo Confirmar Password vacio", () => {
+    onUsuarios.CrearUsuario().click();
+    onCrearUsuario.Nombre().type(faker.person.firstName());
+    onCrearUsuario.Apellido().type(faker.person.lastName());
+    onCrearUsuario.Email().type(faker.internet.email());
+    onCrearUsuario.Rol().click();
+    onCrearUsuario.User_Rol().click();
+    onCrearUsuario.Contraseña().type(Accesos.Contraseña);
+    onCrearUsuario.Crear().click();
+    
+    onCrearUsuario.ErrorPasswordConfirmar().should('exist')
+  });
+  
+  it("217. Intentar crear un usuario con el campo Confirmar Password vacio", () => {
+    onUsuarios.CrearUsuario().click();
+    onCrearUsuario.Nombre().type(faker.person.firstName());
+    onCrearUsuario.Apellido().type(faker.person.lastName());
+    onCrearUsuario.Email().type(faker.internet.email());
+    onCrearUsuario.Contraseña().type(Accesos.Contraseña);
+    onCrearUsuario.ConfirmContraseña().type(Accesos.ConfirContraseña);
+    onCrearUsuario.Crear().click();
+    
+    onCrearUsuario.ErrorRolObligatorio().should('exist')
+  });
+
+  it("218. Boton 'Deshacer' limpia todos los campos del formulario", () => {
+    onUsuarios.CrearUsuario().click();
+    onCrearUsuario.Nombre().type(faker.person.firstName());
+    onCrearUsuario.Apellido().type(faker.person.lastName());
+    onCrearUsuario.Email().type(faker.internet.email());
+    onCrearUsuario.Rol().click();
+    onCrearUsuario.User_Rol().click();
+    onCrearUsuario.Contraseña().type(Accesos.Contraseña);
+    onCrearUsuario.ConfirmContraseña().type(Accesos.ConfirContraseña);
+    
+    onCrearUsuario.BtnDeshacer().click()
+
+    onCrearUsuario.Nombre().should('be.empty')
+    onCrearUsuario.Apellido().should('be.empty')
+    onCrearUsuario.Email().should('be.empty')
+    onCrearUsuario.Contraseña().should('be.empty')
+    onCrearUsuario.ConfirmContraseña().should('be.empty')
+  });
+
+  it.only("219. Boton 'Volver a Usuarios' vuelve al sitio Usuarios", () => {
+    onUsuarios.CrearUsuario().click();
+    onCrearUsuario.BtnVolver().click()
+    onUsuarios.Title_Usuarios().should('exist')
+  })
+
+
+
+
+  
 
 
 
