@@ -236,22 +236,41 @@ describe(' TEST SUITE: "USUARIOS" --> ACCIONES ', () => {
     onCrearUsuario.ConfirmContraseña().should('be.empty')
   });
 
-  it.only("219. Boton 'Volver a Usuarios' vuelve al sitio Usuarios", () => {
+  it("219. Boton 'Volver a Usuarios' vuelve al sitio Usuarios", () => {
     onUsuarios.CrearUsuario().click();
     onCrearUsuario.BtnVolver().click()
     onUsuarios.Title_Usuarios().should('exist')
   })
 
+  it("220. Buscar un usuario existente", () => {
+    const nombre = "Beto"
+    onUsuarios.Search().type(nombre.toLowerCase())
+    onUsuarios.TablaDeUsuarios().children().each((item, index) => {
+      cy.wrap(item).children().should('include.text', nombre.toLowerCase())
+    })
+  })
 
+  it('221. Aplicar filtro de usuario: Activo', () => {
+    onUsuarios.FiltroxEstado().click()
+    onUsuarios.EstadoActivo().click()
+    onUsuarios.CantidadPorPagina().select("100")
+    onUsuarios.TablaDeUsuarios().children().each((item, index) => {
+      cy.wrap(item).children().should('include.text', 'Activo')
+    })
+  })
 
+  it('222. Aplicar filtro de usuario: Pausados', () => {
+    onUsuarios.FiltroxEstado().click()
+    onUsuarios.EstadoPausado().click()
+    onUsuarios.CantidadPorPagina().select("100")
+    onUsuarios.TablaDeUsuarios().children().each((item, index) => {
+      cy.wrap(item).children().should('include.text', 'Pausado')
+    })
+  })
 
-  
-
-
-
-  
-
-  
-
+  it.only('223. Pausar un usuario', () => {
+    const nombre = "Beto"
+    onUsuarios.Search().type(nombre.toLowerCase())
+  })
 
 });
