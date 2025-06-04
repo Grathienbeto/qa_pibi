@@ -19,7 +19,6 @@ export class USUARIOS {
   SpanButtonFiltrado = ".text-center > .me-1";
   CantidadUsuarios = '[id="select-number"]'
   
-
   //METODOS Y/O FUNCIONES //
   Title_Usuarios() {return cy.contains(this.H1_Title_Usuarios, { timeout: 5000 })}
   Title_NuevoUsuario() {return cy.contains(this.H1_Title_Nuevo_Usuario, {timeout: 5000})}
