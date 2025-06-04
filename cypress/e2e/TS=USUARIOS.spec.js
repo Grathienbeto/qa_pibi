@@ -291,9 +291,7 @@ describe(' TEST SUITE: "USUARIOS" --> ACCIONES ', () => {
 
     cy.intercept('PUT', 'https://pibi-app-backend-test.azurewebsites.net/admin/user/updateUser/ae75de75-7055-4da7-b32c-886111ca634e').as('putRequest');
 
-    onUsuarios.Search().type(Accesos.Nombre.toLowerCase())
-    onUsuarios.TablaDeUsuarios().get('[id="cell-6-ae75de75-7055-4da7-b32c-886111ca634e"]').find('a').click()
-    cy.url().should("contain","modificar-usuario");
+    onUsuarios.buscarUnUsuario(Accesos.Nombre.toLowerCase())
 
     onModificarUsuario.Nombre().clear()
     onModificarUsuario.Nombre().type('Norberto')
@@ -308,9 +306,7 @@ describe(' TEST SUITE: "USUARIOS" --> ACCIONES ', () => {
   it('228. Editar usuario: Editar nombre con caracteres especiales o numeros', () => {
     cy.intercept('PUT', 'https://pibi-app-backend-test.azurewebsites.net/admin/user/updateUser/ae75de75-7055-4da7-b32c-886111ca634e').as('putRequest');
 
-    onUsuarios.Search().type(Accesos.Nombre.toLowerCase())
-    onUsuarios.TablaDeUsuarios().get('[id="cell-6-ae75de75-7055-4da7-b32c-886111ca634e"]').find('a').click()
-    cy.url().should("contain","modificar-usuario");
+    onUsuarios.buscarUnUsuario(Accesos.Nombre.toLowerCase())
 
     onModificarUsuario.Nombre().clear()
     onModificarUsuario.Nombre().type('Norberto1@3$')
@@ -324,22 +320,18 @@ describe(' TEST SUITE: "USUARIOS" --> ACCIONES ', () => {
   })
 
   it('229. Editar usuario: Dejar campo nombre vacio', () => {
-    onUsuarios.Search().type(Accesos.Nombre.toLowerCase())
-    onUsuarios.TablaDeUsuarios().get('[id="cell-6-ae75de75-7055-4da7-b32c-886111ca634e"]').find('a').click()
-    cy.url().should("contain","modificar-usuario");
+    onUsuarios.buscarUnUsuario(Accesos.Nombre.toLowerCase())
 
     onModificarUsuario.Nombre().clear()
     onModificarUsuario.Aplicar().click()
     onModificarUsuario.ErrorNombre().should('exist')
   })
 
-  it.only('230. Editar apellido: Editar apellido de forma correcta', () => {
+  it('230. Editar apellido: Editar apellido de forma correcta', () => {
 
     cy.intercept('PUT', 'https://pibi-app-backend-test.azurewebsites.net/admin/user/updateUser/ae75de75-7055-4da7-b32c-886111ca634e').as('putRequest');
 
-    onUsuarios.Search().type(Accesos.Nombre.toLowerCase())
-    onUsuarios.TablaDeUsuarios().get('[id="cell-6-ae75de75-7055-4da7-b32c-886111ca634e"]').find('a').click()
-    cy.url().should("contain","modificar-usuario");
+    onUsuarios.buscarUnUsuario(Accesos.Nombre.toLowerCase())
 
     onModificarUsuario.Apellido().clear()
     onModificarUsuario.Apellido().type("Luna")
@@ -351,12 +343,10 @@ describe(' TEST SUITE: "USUARIOS" --> ACCIONES ', () => {
     });
   })
 
-  it.only('231. Editar apellido: Editar apellido con caracteres especiales o numeros', () => {
+  it('231. Editar apellido: Editar apellido con caracteres especiales o numeros', () => {
     cy.intercept('PUT', 'https://pibi-app-backend-test.azurewebsites.net/admin/user/updateUser/ae75de75-7055-4da7-b32c-886111ca634e').as('putRequest');
 
-    onUsuarios.Search().type(Accesos.Nombre.toLowerCase())
-    onUsuarios.TablaDeUsuarios().get('[id="cell-6-ae75de75-7055-4da7-b32c-886111ca634e"]').find('a').click()
-    cy.url().should("contain","modificar-usuario");
+    onUsuarios.buscarUnUsuario(Accesos.Nombre.toLowerCase())
 
     onModificarUsuario.Apellido().clear()
     onModificarUsuario.Apellido().type('Lun4##%$')
@@ -369,6 +359,23 @@ describe(' TEST SUITE: "USUARIOS" --> ACCIONES ', () => {
     });
   })
 
+  it('232. Editar apellido: Dejar campo apellido vacio', () => {
+    onUsuarios.buscarUnUsuario(Accesos.Nombre.toLowerCase())
+
+    onModificarUsuario.Apellido().clear()
+    onModificarUsuario.Aplicar().click()
+
+    onModificarUsuario.ErrorApellido().should('exist')
+  })
+
+  it.only('233. Cambiar rol de usuario: Admin', () => {
+    onUsuarios.buscarUnUsuario(Accesos.Nombre.toLowerCase())
+
+    onModificarUsuario.User_Rol().click()
+    onModificarUsuario.Rol_Admin().click({force: true})
+
+    cy.contains('Admin').should('exist')
+  })
 
 
 });

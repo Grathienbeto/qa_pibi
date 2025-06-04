@@ -43,6 +43,13 @@ export class USUARIOS {
   SpanFiltrado() {return cy.get(this.SpanButtonFiltrado)}
   CantidadPorPagina() {return cy.get(this.CantidadUsuarios)}
 
+  buscarUnUsuario(nombreUsuario) {
+    onUsuarios.Search().type(nombreUsuario)
+    onUsuarios.TablaDeUsuarios().get('[id="cell-6-ae75de75-7055-4da7-b32c-886111ca634e"]').find('a').click()
+    cy.url().should("contain","modificar-usuario");
+  }
+
+
 }
 
 export const onUsuarios = new USUARIOS()
