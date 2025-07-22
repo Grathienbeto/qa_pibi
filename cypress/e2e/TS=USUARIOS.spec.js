@@ -20,7 +20,7 @@ describe(' TEST SUITE: "USUARIOS" --> ACCIONES ', () => {
     onUsuarios.Title_NuevoUsuario().should('exist')
   })
 
-  it.skip("202. Crear un usuario con todos los datos correctos", () => {
+  it("202. Crear un usuario con todos los datos correctos", () => {
     onUsuarios.CrearUsuario().click();
     onCrearUsuario.Nombre().type(faker.person.firstName());
     onCrearUsuario.Apellido().type(faker.person.lastName());
@@ -33,7 +33,7 @@ describe(' TEST SUITE: "USUARIOS" --> ACCIONES ', () => {
     onUsuarios.Title_Usuarios().should("be.visible");
   });
 
-  it.skip('203. Crear un usuario con un nombre de usuario con Numeros/Caracteres', () => {
+  it('203. Crear un usuario con un nombre de usuario con Numeros/Caracteres', () => {
     onUsuarios.CrearUsuario().click();
     onCrearUsuario.Nombre().type(faker.person.firstName() + `#$3`);
     onCrearUsuario.Apellido().type(faker.person.lastName());
@@ -46,7 +46,7 @@ describe(' TEST SUITE: "USUARIOS" --> ACCIONES ', () => {
     onUsuarios.Title_Usuarios().should("be.visible");
   })
 
-  it.skip('204. Crear un usuario con un apellido de usuario con Numeros/Caracteres', () => {
+  it('204. Crear un usuario con un apellido de usuario con Numeros/Caracteres', () => {
     onUsuarios.CrearUsuario().click();
     onCrearUsuario.Nombre().type(faker.person.firstName());
     onCrearUsuario.Apellido().type(faker.person.lastName()+`#$%`);
@@ -347,7 +347,6 @@ describe(' TEST SUITE: "USUARIOS" --> ACCIONES ', () => {
     cy.intercept('PUT', 'https://pibi-app-backend-test.azurewebsites.net/admin/user/updateUser/ae75de75-7055-4da7-b32c-886111ca634e').as('putRequest');
 
     onUsuarios.buscarUnUsuario(Accesos.Nombre.toLowerCase())
-
     onModificarUsuario.Apellido().clear()
     onModificarUsuario.Apellido().type('Lun4##%$')
     onModificarUsuario.Aplicar().click()
@@ -361,20 +360,17 @@ describe(' TEST SUITE: "USUARIOS" --> ACCIONES ', () => {
 
   it('232. Editar apellido: Dejar campo apellido vacio', () => {
     onUsuarios.buscarUnUsuario(Accesos.Nombre.toLowerCase())
-
     onModificarUsuario.Apellido().clear()
     onModificarUsuario.Aplicar().click()
-
     onModificarUsuario.ErrorApellido().should('exist')
   })
 
-  it.only('233. Cambiar rol de usuario: Admin', () => {
+  it('233. Cambiar rol de usuario: Admin', () => {
     onUsuarios.buscarUnUsuario(Accesos.Nombre.toLowerCase())
-
     onModificarUsuario.User_Rol().click()
-    onModificarUsuario.Rol_Admin().click({force: true})
-
-    cy.contains('Admin').should('exist')
+    onModificarUsuario.Rol_Admin().click()
+    onModificarUsuario.DivBody().should('contain', 'Admin')
+    onModificarUsuario.Aplicar().click()
   })
 
 

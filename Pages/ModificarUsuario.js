@@ -6,9 +6,10 @@ export class MODIFICAR_USUARIO{
     Input_Apellido = '#lastname'
     Rol_User='[id="user_type"]'
     Button_Aplicar= "Aplicar"
+    Div_Body = '[class="card-body"]'
 
     Usuario = 'User'
-    Admin = 'Admin'
+    Admin = '[id="react-select-2-option-0"]'
 
     Error_Nombre = 'El campo nombre es requerido'
     Error_Apellido = 'El campo apellido es requerido'
@@ -19,12 +20,13 @@ export class MODIFICAR_USUARIO{
     Apellido(){return cy.get(this.Input_Apellido)}
     User_Rol(){return cy.get(this.Rol_User)}
     Aplicar(){return cy.contains(this.Button_Aplicar)}
+    DivBody(){return cy.get(this.Div_Body)}
 
     ErrorNombre(){return cy.contains(this.Error_Nombre)}
     ErrorApellido(){return cy.contains(this.Error_Apellido)}
 
     Rol_Usuario(){return cy.contains(this.Usuario)}
-    Rol_Admin(){return cy.contains(this.Admin)}
+    Rol_Admin(){return cy.get(this.Admin)}
 
 }
 
